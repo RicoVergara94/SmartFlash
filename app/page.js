@@ -89,26 +89,47 @@ export default function Home() {
         <Typography variant="h4">Pricing</Typography>
 
         <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">Smart Flashcards</Typography>
-            <Typography>
-              Our AI intelligently breaks down your text into concise flashcards
-              perfect for studying
-            </Typography>
+          <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                p: 3,
+                border: "1px solid",
+              }}
+            >
+              <Typography variant="h5" gutterBottom>
+                Basic
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                $5 / month
+              </Typography>
+              <Typography>
+                Access to basic flascard features and limited storage
+              </Typography>
+              <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                Choose Basic
+              </Button>
+            </Box>
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">Accessible anywhere!</Typography>
-            <Typography>
-              Access your flashcards from any device, at anytime. Study on the
-              go!
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6">Easy Text Input</Typography>
-            <Typography>
-              Simply input your text and let our software do the rest. Creating
-              flashcards has never been easier!
-            </Typography>
+          <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                p: 3,
+                border: "1px solid",
+              }}
+            >
+              <Typography variant="h6" gutterBottom>
+                Pro
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                $10 / month
+              </Typography>
+              <Typography>
+                Unlimited flashcards and storage, with priority support
+              </Typography>
+              <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                Choose Pro
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Box>
