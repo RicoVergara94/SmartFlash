@@ -39,7 +39,7 @@ const Generate = () => {
       .then((data) => setFlashCards(data));
   };
   const handleCardClick = (id) => {
-    setFlipeed((prev) => ({
+    setFlipped((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
@@ -131,7 +131,7 @@ const Generate = () => {
                             position: "relative",
                             width: "100%",
                             height: "200px",
-                            boxShadow: "0 4px 8px 0 rgba(0,0,0, 0.2",
+                            boxShadow: "0 4px 8px 0 rgba(0,0,0, 0.2)",
                             transform: flipped[index]
                               ? "rotateY(180deg)"
                               : "rotateY(0deg)",
@@ -192,7 +192,7 @@ const Generate = () => {
             type="text"
             fullWidth
             value={name}
-            onChange={(e) => setname(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             variant="outlined"
           ></TextField>
         </DialogContent>
