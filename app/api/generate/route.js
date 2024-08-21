@@ -1,3 +1,6 @@
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
+
 const systemPrompt = `You are a flashcard creator. Your task is to generate concise and effective flashcards based on the given topic or content. Follow these guidelines:
 
 1. Create clear and concise questions for the front of the flashcard.
@@ -10,6 +13,7 @@ const systemPrompt = `You are a flashcard creator. Your task is to generate conc
 8. Tailor the difficulty level of the flashcards to the user's specified preferences.
 9. If given a body of text, extract the most important and relevant information for the flashcards.
 10. Aim to create a balanced set of flashcards that covers the topic comprehensively.
+11. Only generates 10 flashcards.
 Remember, the goal is to facilitate effective learning and retention of information through the flashcards. 
 
 Return in the following JSON format
@@ -22,10 +26,10 @@ Return in the following JSON format
     ]
 }`;
 
-const POST = async (req) => {
-  const openai = OpenAI();
+export async function POST(req) {
+  const openai = new OpenAI();
   const data = await req.text();
-  const completion = await openai.chat.completion.create({
+  const completion = await openai.chat.completions.create({
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: data },
@@ -35,5 +39,6 @@ const POST = async (req) => {
   });
 
   const flashcards = JSON.parse(completion.choices[0].message.content);
+  console.log(flashcards);
   return NextResponse.json(flashcards.flashcards);
-};
+}
