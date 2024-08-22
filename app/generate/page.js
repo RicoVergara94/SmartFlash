@@ -65,10 +65,9 @@ const Generate = () => {
       return;
     }
     const batch = writeBatch(db);
-    console.log(user);
     const userDocRef = doc(collection(db, "users"), user.id);
     const docSnap = await getDoc(userDocRef);
-
+    console.log(docSnap.exists());
     if (docSnap.exists()) {
       const collections = docSnap.data().flashcards || [];
       if (collection.find((f) => f.name === name)) {
@@ -76,17 +75,20 @@ const Generate = () => {
         return;
       } else {
         collections.push({ name });
-        batch, set(userDocRef, { flashcards: [{ name }] });
+        batch.set(userDocRef, { flashcards: [{ name }] });
       }
-      const colRef = collection(userDocRef, name);
-      flashcards.forEach((flashcard) => {
-        const cardDocRef = doc(colRef);
-        batch.set(cardDocRef, flashcard);
-      });
-      await batch.commit();
-      handleClose();
-      router.push("./flashcards");
+    } else {
+      batch.set(userDocRef, { falshcards: [{ name }] });
     }
+    const colRef = collection(userDocRef, name);
+    flashcards.forEach((flashcard) => {
+      const cardDocRef = doc(colRef);
+      batch.set(cardDocRef, flashcard);
+    });
+    console.log("here");
+    await batch.commit();
+    handleClose();
+    router.push("./flashcards");
   };
 
   return (
@@ -115,7 +117,7 @@ const Generate = () => {
           <Button
             variant="contained"
             color="primary"
-            fullwidth
+            fullWidth
             onClick={handleSubmit}
           >
             Submit
