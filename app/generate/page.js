@@ -21,6 +21,14 @@ import { Router } from "next/router";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import {
+  writeBatch,
+  doc,
+  collection,
+  setDoc,
+  getDoc,
+} from "firebase/firestore";
+import { db } from "../firebase";
 const Generate = () => {
   const { isLoaded, IsSignedIn, user } = useUser();
   const [flashcards, setFlashCards] = useState([]);
@@ -57,19 +65,20 @@ const Generate = () => {
       return;
     }
     const batch = writeBatch(db);
+    console.log(user);
     const userDocRef = doc(collection(db, "users"), user.id);
-    const docSnap = await getDialogContentTextUtilityClass(userDocRef);
+    const docSnap = await getDoc(userDocRef);
 
     if (docSnap.exists()) {
       const collections = docSnap.data().flashcards || [];
       if (collection.find((f) => f.name === name)) {
-        alert("Your flashcard with the same name already exists.");
+        alert("Your flashcard collection with the same name already exists.");
         return;
       } else {
         collections.push({ name });
         batch, set(userDocRef, { flashcards: [{ name }] });
       }
-      const cardDocRef = collection(userDocRef, name);
+      const colRef = collection(userDocRef, name);
       flashcards.forEach((flashcard) => {
         const cardDocRef = doc(colRef);
         batch.set(cardDocRef, flashcard);
