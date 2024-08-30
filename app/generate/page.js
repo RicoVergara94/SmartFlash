@@ -30,7 +30,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 const Generate = () => {
-  const { isLoaded, IsSignedIn, user } = useUser();
+  const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashCards] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [text, setText] = useState("");
@@ -70,7 +70,7 @@ const Generate = () => {
     console.log(docSnap.exists());
     if (docSnap.exists()) {
       const collections = docSnap.data().flashcards || [];
-      if (collection.find((f) => f.name === name)) {
+      if (collections.find((f) => f.name === name)) {
         alert("Your flashcard collection with the same name already exists.");
         return;
       } else {
@@ -78,14 +78,13 @@ const Generate = () => {
         batch.set(userDocRef, { flashcards: [{ name }] });
       }
     } else {
-      batch.set(userDocRef, { falshcards: [{ name }] });
+      batch.set(userDocRef, { flashcards: [{ name }] });
     }
     const colRef = collection(userDocRef, name);
     flashcards.forEach((flashcard) => {
       const cardDocRef = doc(colRef);
       batch.set(cardDocRef, flashcard);
     });
-    console.log("here");
     await batch.commit();
     handleClose();
     router.push("./flashcards");

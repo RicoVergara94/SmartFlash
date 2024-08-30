@@ -1,5 +1,7 @@
 "use client";
 import getStripe from "@/utils/get-stripe";
+
+import { useState } from "react";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import {
   AppBar,
@@ -11,8 +13,33 @@ import {
   Grid,
 } from "@mui/material";
 import Head from "next/head";
+import { POST } from "./api/generate/route";
 
 export default function Home() {
+  const handleSubmit = async (chosenAmount) => {
+    const checkoutSession = await fetch("/api/checkout_session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        origin: "http://localhost:3000",
+      },
+      body: JSON.stringify({ amount: chosenAmount }),
+    });
+
+    const checkoutSessionJson = await checkoutSession.json();
+    if (checkoutSession.status === 500) {
+      console.error(checkoutSession.message);
+      return;
+    }
+    const stripe = await getStripe();
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: checkoutSessionJson.id,
+    });
+    if (error) {
+      console.warn(error.message);
+    }
+  };
+
   return (
     <Container
       maxWidth="100vw"
@@ -109,7 +136,14 @@ export default function Home() {
               <Typography>
                 Access to basic flascard features and limited storage
               </Typography>
-              <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+                onClick={() => {
+                  handleSubmit(5);
+                }}
+              >
                 Choose Basic
               </Button>
             </Box>
@@ -130,7 +164,14 @@ export default function Home() {
               <Typography>
                 Unlimited flashcards and storage, with priority support
               </Typography>
-              <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+                onClick={() => {
+                  handleSubmit(10);
+                }}
+              >
                 Choose Pro
               </Button>
             </Box>
