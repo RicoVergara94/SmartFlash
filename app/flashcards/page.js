@@ -11,12 +11,15 @@ import {
 import { db } from "../firebase";
 import { useRouter } from "next/navigation";
 import {
+  Button,
   CardActionArea,
   CardContent,
   Typography,
   Container,
   Grid,
   Card,
+  AppBar,
+  Toolbar,
 } from "@mui/material";
 
 const FlashCards = () => {
@@ -47,6 +50,22 @@ const FlashCards = () => {
 
   return (
     <Container maxWidth="100vw">
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Smart Flash
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: "black" }}
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            Home
+          </Button>
+        </Toolbar>
+      </AppBar>
       <Grid
         container
         spacing={3}

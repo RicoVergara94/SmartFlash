@@ -2,7 +2,8 @@
 import getStripe from "@/utils/get-stripe";
 
 import { useState } from "react";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { SignedIn, SignedOut, UserButton, useAuth } from "@clerk/nextjs";
 import {
   AppBar,
   Box,
@@ -12,10 +13,16 @@ import {
   Button,
   Grid,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import Head from "next/head";
 import { POST } from "./api/generate/route";
+import { SignIn, useUser } from "@clerk/nextjs";
 
 export default function Home() {
+  const { user } = useUser();
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
+
   const handleSubmit = async (chosenAmount) => {
     const checkoutSession = await fetch("/api/checkout_session", {
       method: "POST",
@@ -60,17 +67,37 @@ export default function Home() {
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Smart Flash
           </Typography>
-          <SignedOut>
-            <Button color="inherit" href="/sign-in">
-              Login
-            </Button>
-            <Button color="inherit" href="/sign-up">
-              Sign Up
-            </Button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton></UserButton>
-          </SignedIn>
+          <Box
+            sx={{
+              display: { xs: "none", sm: "block" },
+              // display: "flex",
+              // alignItems: "center",
+              // justifyContent: "flex-end",
+              // padding: "10px 20px",
+            }}
+          >
+            <SignedOut>
+              <Button color="inherit" href="/sign-in">
+                Login
+              </Button>
+              <Button color="inherit" href="/sign-up">
+                Sign Up
+              </Button>
+            </SignedOut>
+            <SignedIn>
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: "black", mr: 4 }}
+                onClick={() => {
+                  router.push("/flashcards");
+                }}
+              >
+                My Flashcards
+              </Button>
+              <UserButton></UserButton>
+            </SignedIn>
+          </Box>
+          <MenuIcon sx={{ display: { xs: "block", sm: "none" } }} />
         </Toolbar>
       </AppBar>
       <Box
@@ -117,7 +144,9 @@ export default function Home() {
         <Grid spacing={4}></Grid>
       </Box>
       <Box sx={{ my: 6, textAlign: "center" }}>
-        <Typography variant="h4">Pricing</Typography>
+        <Typography variant="h3" sx={{ m: 4 }}>
+          Pricing
+        </Typography>
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
