@@ -70,10 +70,10 @@ export default function Home() {
           <Box
             sx={{
               display: { xs: "none", sm: "block" },
-              // display: "flex",
-              // alignItems: "center",
-              // justifyContent: "flex-end",
-              // padding: "10px 20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              padding: "10px 20px",
             }}
           >
             <SignedOut>
@@ -111,7 +111,18 @@ export default function Home() {
           {" "}
           The easiest way to make flashcards from your text
         </Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2 }}
+          onClick={() => {
+            if (user) {
+              router.push("/generate");
+            } else {
+              alert("please sign in to generate flashcards.");
+            }
+          }}
+        >
           Get Started
         </Button>
       </Box>

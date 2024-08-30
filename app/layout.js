@@ -14,6 +14,9 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <title>SmartFlash</title>
+        </head>
         <body className={inter.className}>{children}</body>
       </html>
     </ClerkProvider>

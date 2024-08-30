@@ -92,6 +92,17 @@ const Generate = () => {
 
   return (
     <Container maxWidth="md">
+      <Box display="flex" justifyContent="space-between">
+        <Button
+          variant="contained"
+          onClick={() => {
+            router.push("/");
+          }}
+          sx={{ ml: "auto" }}
+        >
+          Homepage
+        </Button>
+      </Box>
       <Box
         sx={{
           mt: 4,

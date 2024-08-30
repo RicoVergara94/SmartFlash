@@ -4,7 +4,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import getStripe from "@/utils/get-stripe";
 import { useSearchParams } from "next/navigation";
-import { CircularProgress, Container, Typography, Box } from "@mui/material";
+import {
+  CircularProgress,
+  Container,
+  Typography,
+  Box,
+  Button,
+} from "@mui/material";
+import CreditCardOffIcon from "@mui/icons-material/CreditCardOff";
+import CreditScoreIcon from "@mui/icons-material/CreditScore";
 
 const ResultPage = () => {
   const router = useRouter();
@@ -68,26 +76,39 @@ const ResultPage = () => {
 
   return (
     <Container>
+      <Button
+        onClick={() => {
+          router.push("/");
+        }}
+      >
+        Return to Homepage
+      </Button>
       {session.payment_status === "paid" ? (
-        <>
-          <Typography variant="h4">Thank you for purchasing</Typography>
-          <Box sx={{ mt: 22 }}>
-            <Typography>Session ID: {session_id}</Typography>
-            <Typography>
-              We have received your payment. You will receive an email with the
-              order details shortly.
-            </Typography>
-          </Box>
-        </>
+        <Container>
+          <>
+            <Typography variant="h4">Thank you for purchasing</Typography>
+            <Box sx={{ mt: 22 }}>
+              <Typography>Session ID: {session_id}</Typography>
+              <CreditScoreIcon fontSize="large" />
+              <Typography>
+                We have received your payment. You will receive an email with
+                the order details shortly.
+              </Typography>
+            </Box>
+          </>
+        </Container>
       ) : (
-        <>
-          <Typography variant="h4">Payment Failed</Typography>
-          <Box sx={{ mt: 22 }}>
-            <Typography variant="body1">
-              Your payment was not successful. Please try again.
-            </Typography>
-          </Box>
-        </>
+        <Container>
+          <>
+            <Typography variant="h4">Payment Failed</Typography>
+            <Box sx={{ mt: 22 }}>
+              <CreditCardOffIcon fontSize="large" />
+              <Typography variant="body1">
+                Your payment was not successful. Please try again.
+              </Typography>
+            </Box>
+          </>
+        </Container>
       )}
     </Container>
   );

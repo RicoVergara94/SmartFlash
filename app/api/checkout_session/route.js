@@ -11,7 +11,6 @@ export async function GET(req) {
   const session_id = searchParams.get("session_id");
 
   try {
-    console.log("this is where I am");
     const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
     return NextResponse.json(checkoutSession);
   } catch (err) {
@@ -28,8 +27,6 @@ export async function POST(req) {
   const body = await req.json();
 
   const { amount } = body;
-
-  console.log("this is the amount: ", req.body.amount);
 
   const params = {
     mode: "subscription",
